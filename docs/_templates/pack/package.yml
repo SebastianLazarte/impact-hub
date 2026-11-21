@@ -1,0 +1,4 @@
+# <What this pack does>. Depends on <packs> (spec C2).
+enforce_dependencies: true
+dependencies:
+  - packs/scoring

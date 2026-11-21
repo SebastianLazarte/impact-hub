@@ -1,0 +1,9 @@
+include:
+  - "**/*.{rb,rake,erb}"
+exclude:
+  - "{bin,node_modules,script,tmp,vendor,public}/**/*"
+package_paths:
+  - "."
+  - "packs/*"
+cache: true
+cache_directory: "tmp/cache/packwerk"

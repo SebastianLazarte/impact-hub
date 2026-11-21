@@ -1,0 +1,32 @@
+# Acceptance criteria. Every id must be named by at least one test
+# (test "IH-n: ..."). test/traceability_test.rb enforces it both ways.
+# Format: one observable behaviour per id, written in EARS
+# (The system shall... / When... / While... / If..., then... / Where...).
+# Non-functional criteria start with their kind: (product), (organisational), (external).
+# New and changed ids arrive through a change folder: docs/changes/AGENTS.md.
+IH-1: >-
+  The system shall compute hours per month in code as minutes per run x runs per
+  month / 60, as a BigDecimal rounded to 2 places, never a Float.
+IH-2: >-
+  If a number cannot be computed, then the system shall report it as unknown (nil)
+  with a reason, never as 0.
+IH-3: >-
+  The system shall compute the automation score from the decision table in
+  Scoring::Rules, always as an integer between 0 and 100.
+IH-4: >-
+  The system shall choose the method as follows: judgement -> human; structured
+  input with clear rules -> rules; anything else -> ai_assisted.
+IH-5: >-
+  The system shall require at least review for an ai_assisted step and at least
+  approve for a step with sensitive data, and adding sensitive data shall never
+  lower the control.
+IH-6: >-
+  If a step is built with invalid facts (unknown vocabulary, negative numbers,
+  exception rate outside 0..1), then the system shall reject it when it is built,
+  not later.
+IH-7: >-
+  (organisational) The scoring pack shall depend on nothing: no other pack, no
+  Rails, no database, no network, no LLM.
+IH-8: >-
+  The system shall render the home page through Inertia with the rule-computed
+  scores, sending hours as decimal strings.
