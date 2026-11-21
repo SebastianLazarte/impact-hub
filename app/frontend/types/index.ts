@@ -4,3 +4,5 @@ export type FlashData = {
 }
 
 export type SharedProps = {}
+
+export type * from "./serializers"

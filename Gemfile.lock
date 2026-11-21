@@ -77,6 +77,7 @@ GEM
       uri (>= 0.13.1)
     addressable (2.9.2)
       public_suffix (>= 2.0.2, < 8.0)
+    alba (4.0.3)
     ast (2.4.3)
     base64 (0.3.0)
     bcrypt_pbkdf (1.1.2)
@@ -366,6 +367,9 @@ GEM
     thruster (0.1.28-x86_64-linux)
     timeout (0.6.1)
     tsort (0.2.0)
+    typelizer (0.15.0)
+      benchmark
+      railties (>= 6.1.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (3.3.0)
@@ -406,6 +410,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
+  alba (~> 4.0)
   bootsnap
   brakeman
   bundler-audit
@@ -425,6 +430,7 @@ DEPENDENCIES
   solid_cache
   solid_queue
   thruster
+  typelizer (~> 0.15)
   tzinfo-data
   vite_rails (~> 3.11)
   web-console
