@@ -1,0 +1,4 @@
+# Root package (app/). It may use scoring; packs never depend on the root.
+enforce_dependencies: true
+dependencies:
+  - packs/scoring
