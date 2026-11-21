@@ -4,7 +4,10 @@
 module QuantityFormat
   UNSPACED_UNITS = %w[°].freeze
 
+  # Only exact numbers: nil would become "0" and a Float would carry binary noise (P3, P4).
   def self.amount(value, unit)
+    raise ArgumentError, "expected an Integer or BigDecimal, got #{value.inspect}" unless value.is_a?(Integer) || value.is_a?(BigDecimal)
+
     number = format_number(value)
     UNSPACED_UNITS.include?(unit) ? "#{number}#{unit}" : "#{number} #{unit}"
   end

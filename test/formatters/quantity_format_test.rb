@@ -9,4 +9,9 @@ class QuantityFormatTest < ActiveSupport::TestCase
     assert_equal "1,234,567.5 kg", QuantityFormat.amount(BigDecimal("1234567.50"), "kg")
     assert_equal "21 Nov 2026", QuantityFormat.date(Date.new(2026, 11, 21))
   end
+
+  test "P3: only exact numbers are formatted; nil and floats are rejected" do
+    assert_raises(ArgumentError) { QuantityFormat.amount(nil, "kg") }
+    assert_raises(ArgumentError) { QuantityFormat.amount(1.5, "kg") }
+  end
 end

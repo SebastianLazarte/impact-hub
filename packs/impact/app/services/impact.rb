@@ -6,6 +6,7 @@ require "bigdecimal"
 module Impact
   APPLICATIONS = %i[pedestrian traffic rack_end column machine].freeze
   SOURCES = %i[measured estimated declared].freeze
+  VERDICTS = %i[not_rated too_weak check_space does_not_fit fits].freeze
 
   FACTS = {
     vehicle_mass_kg: { label: "vehicle mass", unit: "kg" }.freeze,
