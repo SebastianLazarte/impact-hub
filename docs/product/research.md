@@ -4,7 +4,7 @@ Accessed: 2026-11-20. Evidence level of everything here: **public material**. It
 what a manufacturer and a job posting say in public, not what users were observed doing.
 This file is the one home for these sources; other docs link here.
 
-<!-- Step 0, Discover. Desk research behind the move from Intake Hub to Impact Hub (change 001). -->
+<!-- Step 0, Discover. Desk research behind Impact Hub (change 001). -->
 
 ## Why this domain
 The product targets the kind of work done by a Rails 8 team "building the Rails 8
@@ -31,7 +31,8 @@ logo, products or data in the product itself (spec constraint C4, change 001).
 
 ## What this means for the product
 - **The core is a deterministic calculation.** Required energy comes from four facts and
-  one formula (R2), so only the rules compute it, exactly and reproducibly (P4).
+  one formula (R2), so only the rules compute it, reproducibly and never below the
+  exact value (P1, P4).
 - **A barrier fits a hazard only if two checks pass.** Its tested energy at a relevant
   angle covers the required energy, and its deflection fits the space behind it (R2, R8).
 - **Unknown facts are normal in a survey.** Remote surveys (R4) and moving loads leave

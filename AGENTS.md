@@ -1,4 +1,4 @@
-# Intake Hub: instructions for coding agents
+# Impact Hub: instructions for coding agents
 
 Rails 8.1 modular monolith that scores departmental automation requests.
 Spec: [docs/specs/](docs/specs/AGENTS.md) (system.md, one file per capability).
@@ -17,7 +17,7 @@ are repeated here on purpose, so every session loads them without opening the sp
 | Area | Read first | Verify with |
 |---|---|---|
 | Who the users are, why the product exists | [docs/product/](docs/product/vision.md) (vision, personas, scenarios); sources in [research.md](docs/product/research.md) | a person; claims tagged `Evidence:` |
-| The pivot to Impact Hub (in progress) | [change 001](docs/changes/001-site-survey-specification/proposal.md) (its spec delta) and [docs/product/](docs/product/vision.md) | until 001 merges, `docs/specs/` still describes Intake Hub and is the truth for the code |
+| Site surveys and barriers (change 001, in progress) | [change 001](docs/changes/001-site-survey-specification/proposal.md) (its spec delta) and [docs/product/](docs/product/vision.md) | until 001 merges, `docs/specs/` still describes the baseline and is the truth for the code |
 | A behaviour change (new phase, new or changed IH-n) | [docs/changes/AGENTS.md](docs/changes/AGENTS.md) | the proposal's `Status: Approved`, then `bin/ci` |
 | `packs/scoring/` | [packs/scoring/AGENTS.md](packs/scoring/AGENTS.md), [docs/specs/scoring.md](docs/specs/scoring.md) | the command in that file |
 | `app/controllers`, `app/frontend` | C1 and Q1 in [docs/specs/system.md](docs/specs/system.md) | `bin/rails test test/controllers` and `npm run check` |

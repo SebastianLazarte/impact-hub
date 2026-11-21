@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Phase 1-2 demo: scores a few sample steps with the scoring pack and renders them.
-# Replaced by real requests from the intake pack in phase 3.
+# Replaced by the list of surveys in change 001.
 class HomeController < InertiaController
   SAMPLE_STEPS = [
     { name: "Copy order lines from email into the ERP", department: "Sales",

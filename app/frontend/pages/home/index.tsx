@@ -30,9 +30,9 @@ function EstimateCell<T>({ estimate, suffix = '' }: { estimate: Estimate<T>; suf
 export default function Home({ steps }: { steps: Step[] }) {
   return (
     <>
-      <Head title="Intake Hub" />
+      <Head title="Impact Hub" />
       <main className="mx-auto max-w-5xl px-4 py-10">
-        <h1 className="text-2xl font-semibold text-slate-900">Intake Hub</h1>
+        <h1 className="text-2xl font-semibold text-slate-900">Impact Hub</h1>
         <p className="mt-2 max-w-2xl text-slate-600">
           Rules compute every number. The LLM only interprets text, may raise a human
           control but never lower it, and a person approves every item.

@@ -14,17 +14,17 @@ any design or code, and every acceptance criterion is proven by a test that name
 | Part | State |
 |---|---|
 | Rails 8.1 baseline: pure-Ruby rules pack, Inertia + React page, Packwerk boundaries, CI | built, CI green |
-| [Change 001](docs/changes/001-site-survey-specification/proposal.md): survey a site and specify a barrier for every hazard point | specified, in review |
-| Design and architecture decisions (ADRs) for change 001 | not started: they follow the approved spec |
+| [Change 001](docs/changes/001-site-survey-specification/proposal.md): survey a site and specify a barrier for every hazard point | specified, approved 2026-11-21 |
+| [Design](docs/changes/001-site-survey-specification/design.md) and [ADRs 0001 to 0006](docs/adr/) for change 001 | approved 2026-11-21; next: merge the spec (step 4), then build |
 
-The code on `main` still implements the first domain, Intake Hub (scoring automation
-requests), described in [docs/specs/](docs/specs/AGENTS.md). Change 001 replaces that
-domain with Impact Hub. Until it is approved and merged, `docs/specs/` is the truth
-for the code and the change folder is the proposal.
+The code on `main` is still the baseline described in [docs/specs/](docs/specs/AGENTS.md):
+a sample rules pack behind one Inertia page. Change 001 replaces it with the site
+survey. Until its spec is merged into `docs/specs/` (step 4), `docs/specs/` is the
+truth for the code and the change folder is the proposal.
 
 ## What change 001 specifies
 - **Required energy** per hazard point: `E = ½ × (mass + load) × (speed × sin(angle))²`,
-  computed exactly and rounded up, so it is never understated.
+  every rounding goes up, so it is never understated.
 - **A barrier is recommended only if** its tested rating at the hazard's angle covers
   that energy and its deflection fits a known clearance. Otherwise the point says why:
   incomplete, needs a site check, or needs engineering review.

@@ -1,4 +1,4 @@
-# Intake Hub: system specification
+# Impact Hub: system specification
 
 Status: **Approved** (2026-11-20)
 
@@ -9,7 +9,7 @@ it costs, decide what can be automated and with how much human control, and rank
 against everything else. Today that judgement lives in conversations and nobody can
 check it afterwards.
 
-Intake Hub makes that judgement explicit, computed by rules, and reviewable.
+Impact Hub makes that judgement explicit, computed by rules, and reviewable.
 
 ## 2. Users
 | Who | Needs |
@@ -51,7 +51,7 @@ to it. Until then it reads "—".
 | 0 | WSL2 Ubuntu, Ruby 3.4, Rails 8.1, PostgreSQL 17, Node 22 | `rails -v` and `psql` work |
 | 1 | Rails app, Inertia + React + TS + Vite, Packwerk, CI, AGENTS.md | A React page renders through Inertia; CI is green |
 | 2 | `scoring` pack ([scoring.md](scoring.md)), test first | IH-1 to IH-8 green |
-| 3 | `intake` pack: requests and steps CRUD in React | A request can be created and scored |
+| 3 | `requests` pack: requests and steps CRUD in React | A request can be created and scored |
 | 4 | `ai_assist` pack: fake LLM provider, Reconciler, Solid Queue job | The suggestion is shown and cannot lower a control |
 | 5 | `triage` pack: ranked board, approve/reject with reason | Every decision recorded |
 

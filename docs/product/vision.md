@@ -41,3 +41,4 @@ barrier chosen too weak fails at the moment it matters. Evidence: public materia
 | The impact angle can be estimated per hazard point on site | Compare angles chosen by two people for the same layout | open |
 | A conservative rule (rating at the smallest tested angle not below the hazard's) is acceptable to engineers | Review three recommendations with an engineer | open |
 | The clearance behind a barrier is measured in surveys | Look at one real survey checklist | open |
+| One vehicle per hazard point is enough: the surveyor can tell which vehicle hits hardest there | Ask two surveyors how many vehicle types pass a typical hazard point, and how they pick the one to design for | open |
