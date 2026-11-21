@@ -7,7 +7,7 @@ module Surveys
     MODES = %w[on_site remote].freeze
 
     has_many :hazard_points, -> { order(:position) }, class_name: "Surveys::HazardPoint",
-      inverse_of: :survey, dependent: :destroy
+      inverse_of: :survey, dependent: :destroy, autosave: true
 
     normalizes :site_name, :customer_name, :mode, :notes, with: ->(text) { text.strip.presence }
 
@@ -19,11 +19,15 @@ module Surveys
 
     private
 
-    # A string Rails cannot read as a date casts to nil; the raw text tells blank from garbage.
+    # Rails falls back to loose parsing ("03/04/2026", "2026-11-21 abc"), so the raw text
+    # must be exactly YYYY-MM-DD and also cast to a real date (P3).
     def date_is_a_date
-      return unless surveyed_on.nil?
-
-      errors.add(:surveyed_on, surveyed_on_before_type_cast.to_s.strip.empty? ? "Enter the survey date." : "Enter a date, like 2026-11-21.")
+      raw = surveyed_on_before_type_cast.to_s.strip
+      if raw.empty?
+        errors.add(:surveyed_on, "Enter the survey date.")
+      elsif !raw.match?(/\A\d{4}-\d{2}-\d{2}\z/) || surveyed_on.nil?
+        errors.add(:surveyed_on, "Enter a date, like 2026-11-21.")
+      end
     end
 
     def has_a_point

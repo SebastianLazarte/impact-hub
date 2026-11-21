@@ -28,13 +28,22 @@ module Surveys
         result = Surveys::CreateSurvey.call(with_point(s1, "speed_kmh" => raw))
         assert_equal "Enter a number, like 8 or 8.5.", result.errors["hazard_points.0.speed_kmh"], raw
       end
-      assert_equal "Enter a date, like 2026-11-21.", Surveys::CreateSurvey.call(s1.merge("surveyed_on" => "2026-13-45")).errors["surveyed_on"]
+      [ "2026-13-45", "03/04/2026", "2026-11-21 abc", "Nov 21 2026" ].each do |raw|
+        assert_equal "Enter a date, like 2026-11-21.", Surveys::CreateSurvey.call(s1.merge("surveyed_on" => raw)).errors["surveyed_on"], raw
+      end
     end
 
     test "IH-21: a source with no value, and a survey with no point, are rejected" do
       assert_equal "Enter a value, or clear its source.",
         Surveys::CreateSurvey.call(with_point(s1, "max_load_kg" => "", "max_load_kg_source" => "estimated")).errors["hazard_points.0.max_load_kg"]
       assert_equal "Add at least one hazard point.", Surveys::CreateSurvey.call(s1.merge("hazard_points" => [])).errors["hazard_points"]
+    end
+
+    test "IH-21: an invalid second point reports only its own fields and saves nothing" do
+      second = s1["hazard_points"][0].merge("name" => "", "speed_kmh" => "0")
+      result = Surveys::CreateSurvey.call(s1.merge("hazard_points" => [ s1["hazard_points"][0], second ]))
+      assert_equal %w[hazard_points.1.name hazard_points.1.speed_kmh], result.errors.keys.sort
+      assert_equal [ 0, 0 ], [ Surveys::Survey.count, Surveys::HazardPoint.count ]
     end
 
     test "IH-23: each fact keeps its source, and an unknown stays nil" do
