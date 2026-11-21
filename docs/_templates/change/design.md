@@ -11,7 +11,7 @@
 |---|---|---|
 
 ## Data
-<!-- Tables, fields, constraints. Quantities stay BigDecimal; unknown is nil with a reason (P4). -->
+<!-- Tables, fields, constraints. Quantities stay BigDecimal; unknown is nil with a reason (P3). -->
 
 ## Interfaces
 <!-- Inertia pages and the props each one receives (C1); routes. -->

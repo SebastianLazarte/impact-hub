@@ -4,29 +4,63 @@
 # (The system shall... / When... / While... / If..., then... / Where...).
 # Non-functional criteria start with their kind: (product), (organisational), (external).
 # New and changed ids arrive through a change folder: docs/changes/AGENTS.md.
-IH-1: >-
-  The system shall compute hours per month in code as minutes per run x runs per
-  month / 60, as a BigDecimal rounded to 2 places, never a Float.
-IH-2: >-
-  If a number cannot be computed, then the system shall report it as unknown (nil)
-  with a reason, never as 0.
-IH-3: >-
-  The system shall compute the automation score from the decision table in
-  Scoring::Rules, always as an integer between 0 and 100.
-IH-4: >-
-  The system shall choose the method as follows: judgement -> human; structured
-  input with clear rules -> rules; anything else -> ai_assisted.
-IH-5: >-
-  The system shall require at least review for an ai_assisted step and at least
-  approve for a step with sensitive data, and adding sensitive data shall never
-  lower the control.
-IH-6: >-
-  If a step is built with invalid facts (unknown vocabulary, negative numbers,
-  exception rate outside 0..1), then the system shall reject it when it is built,
-  not later.
 IH-7: >-
-  (organisational) The scoring pack shall depend on nothing: no other pack, no
-  Rails, no database, no network, no LLM.
-IH-8: >-
-  The system shall render the home page through Inertia with the rule-computed
-  scores, sending hours as decimal strings.
+  (organisational) The impact pack shall depend on nothing: no other pack, no Rails,
+  no database, no network, no LLM.
+IH-14: >-
+  When a hazard point has its vehicle mass, maximum load, speed and impact angle, the
+  system shall show its required energy as 1/2 x (mass + load) x (speed / 3.6 x
+  sin(angle))^2 in joules, rounded up to a whole joule, with any intermediate value
+  that cannot be exact also rounded up, so that it is never below the exact value.
+IH-15: >-
+  If a hazard point is missing its vehicle mass, maximum load, speed or impact angle,
+  then the system shall mark the point as incomplete, show the required energy as
+  unknown, name every missing fact, and recommend no barrier.
+IH-16: >-
+  The system shall rate a barrier for a hazard point by its tested energy at the
+  smallest test angle not below the hazard's angle, and shall never show as covering a
+  barrier that has no such angle, whose tested energy is higher at a larger test angle
+  than at a smaller one, or whose rating is below the required energy.
+IH-17: >-
+  If the clearance of a hazard point is unknown or smaller than a barrier's deflection
+  at maximum energy, then the system shall not show that barrier as fitting and shall
+  show the reason.
+IH-18: >-
+  If the required energy of a hazard point is known, no barrier of its application
+  both covers it and fits a known clearance, and none is waiting for a clearance, then
+  the system shall mark the point for engineering review with the reason and recommend
+  no barrier.
+IH-19: >-
+  When at least one barrier fits a hazard point, the system shall recommend the fitting
+  barrier with the lowest rating (ties: smaller deflection, then name) and list the
+  other fitting barriers.
+IH-20: >-
+  When the surveyor submits a survey with a site name, a customer name, a survey date,
+  a mode and at least one hazard point, the system shall save the survey with its
+  points in the order given and show it in the list of surveys.
+IH-21: >-
+  If a submitted survey has no hazard point or any invalid field (a site name,
+  customer name, survey date, mode, or a point's name, zone or application left blank;
+  a number or date that cannot be read; an angle outside 1 to 90 degrees; a mass or
+  speed not above 0; a load or clearance below 0; a mode or application outside its
+  list; or a fact with a value and no source, or a source and no value), then the
+  system shall save nothing and show a plain-language message next to each invalid
+  field, or above the hazard points when there are none.
+IH-22: >-
+  (product) The system shall show "example values, not manufacturer data" on every
+  page that shows catalog values.
+IH-23: >-
+  The system shall keep, for every fact of a hazard point that has a value, whether it
+  was measured, estimated or declared by the customer, and shall name next to every
+  energy, verdict and outcome the facts it rests on that were not measured: for an
+  energy, its mass, load, speed and angle; for a verdict or outcome, those and the
+  clearance when it has a value.
+IH-24: >-
+  If the clearance of a hazard point is unknown and at least one barrier of its
+  application covers its required energy, then the system shall mark the point as
+  needing a site check, with the reason that the clearance is not given, and recommend
+  no barrier.
+IH-25: >-
+  While a survey is open, the system shall show the verdicts, outcome and
+  recommendation of each of its points as computed from the current catalog, not from
+  the catalog in force when the survey was saved.

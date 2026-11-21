@@ -1,4 +1,3 @@
-# Root package (app/). It may use scoring; packs never depend on the root.
+# Root package (app/). Packs never depend on the root; it will depend on them as they are added.
 enforce_dependencies: true
-dependencies:
-  - packs/scoring
+dependencies: []
