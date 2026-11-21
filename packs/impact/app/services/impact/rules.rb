@@ -38,8 +38,7 @@ module Impact
     # The first matching row of impact.md section 5; call it only with a known energy (P1, P2).
     def verdict(point, energy, barrier)
       clearance = point.clearance_mm
-      unmeasured = energy.unmeasured.dup
-      unmeasured << :clearance_mm if clearance.known? && !clearance.measured?
+      unmeasured = unmeasured_facts(point, energy)
       rating = rating(barrier, point.impact_angle_deg.value)
       reason = unrated_reason(barrier, point.impact_angle_deg.value)
 
@@ -52,6 +51,39 @@ module Impact
         end
       Verdict.new(barrier: barrier, kind: kind, rating: rating, reason: reason, unmeasured: unmeasured)
     end
+
+    # The first matching row of impact.md section 6, over the barriers of the point's application.
+    def assess(point, barriers)
+      energy = required_energy(point)
+      unmeasured = unmeasured_facts(point, energy)
+      if energy.joules.nil?
+        return Assessment.new(energy: energy, verdicts: [], outcome: :incomplete, reason: :missing_facts,
+                              recommendation: nil, other_fitting: [], unmeasured: unmeasured)
+      end
+
+      verdicts = barriers.select { |barrier| barrier.application == point.application }
+                         .map { |barrier| verdict(point, energy, barrier) }
+      kinds = verdicts.map(&:kind)
+      fitting = verdicts.select { |v| v.kind == :fits }
+                        .sort_by { |v| [ v.rating.joules, v.barrier.deflection_mm, v.barrier.name ] }.map(&:barrier)
+
+      outcome, reason =
+        if fitting.any? then [ :specified, nil ]
+        elsif kinds.include?(:check_space) then [ :needs_site_check, :clearance_not_given ]
+        elsif kinds.include?(:does_not_fit) then [ :engineering_review, :covering_barriers_do_not_fit ]
+        else [ :engineering_review, :no_barrier_rated_high_enough ]
+        end
+      Assessment.new(energy: energy, verdicts: verdicts, outcome: outcome, reason: reason,
+                     recommendation: fitting.first, other_fitting: fitting.drop(1), unmeasured: unmeasured)
+    end
+
+    # The facts a result rests on that were not measured: the energy's, plus the clearance when it has a value.
+    def unmeasured_facts(point, energy)
+      clearance = point.clearance_mm
+      energy.unmeasured + (clearance.known? && !clearance.measured? ? [ :clearance_mm ] : [])
+    end
+    private_class_method :unmeasured_facts
+    private :unmeasured_facts
 
     def unrated_reason(barrier, angle_deg)
       return :no_test_angle if barrier.ratings.keys.none? { |test_angle| test_angle >= angle_deg }

@@ -33,6 +33,10 @@ module ImpactHelpers
       barrier("PR-18", 30_000, 18_000, 700), barrier("PR-24", 40_000, 24_000, 550) ]
   end
 
+  def assess(hazard, barriers)
+    Impact::Rules.assess(hazard, barriers)
+  end
+
   def verdict(barrier, **point_overrides)
     hazard = point(**point_overrides)
     Impact::Rules.verdict(hazard, Impact::Rules.required_energy(hazard), barrier)
