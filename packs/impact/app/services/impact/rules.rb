@@ -26,6 +26,42 @@ module Impact
       Energy.new(joules: joules, missing: [], unmeasured: unmeasured)
     end
 
+    # The barrier's tested energy at the smallest test angle not below the hazard's, or
+    # nil when it has none or its energy rises with the angle (P1).
+    def rating(barrier, angle_deg)
+      return nil unless unrated_reason(barrier, angle_deg).nil?
+
+      angle, joules = barrier.ratings.select { |test_angle, _| test_angle >= angle_deg }.min_by(&:first)
+      Rating.new(angle_deg: angle, joules: joules)
+    end
+
+    # The first matching row of impact.md section 5; call it only with a known energy (P1, P2).
+    def verdict(point, energy, barrier)
+      clearance = point.clearance_mm
+      unmeasured = energy.unmeasured.dup
+      unmeasured << :clearance_mm if clearance.known? && !clearance.measured?
+      rating = rating(barrier, point.impact_angle_deg.value)
+      reason = unrated_reason(barrier, point.impact_angle_deg.value)
+
+      kind =
+        if rating.nil? then :not_rated
+        elsif rating.joules < energy.joules then :too_weak
+        elsif !clearance.known? then :check_space
+        elsif barrier.deflection_mm > clearance.value then :does_not_fit
+        else :fits
+        end
+      Verdict.new(barrier: barrier, kind: kind, rating: rating, reason: reason, unmeasured: unmeasured)
+    end
+
+    def unrated_reason(barrier, angle_deg)
+      return :no_test_angle if barrier.ratings.keys.none? { |test_angle| test_angle >= angle_deg }
+
+      by_angle = barrier.ratings.sort.map(&:last)
+      :rises_with_angle if by_angle.combination(2).any? { |smaller_angle, larger_angle| larger_angle > smaller_angle }
+    end
+    private_class_method :unrated_reason
+    private :unrated_reason
+
     def sin_squared(angle)
       exact = EXACT_SIN2.find { |degrees, _| angle == degrees }&.last
       return exact if exact

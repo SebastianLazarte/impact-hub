@@ -16,4 +16,29 @@ module ImpactHelpers
       }.merge(overrides)
     )
   end
+
+  def barrier(name, e45, e90, deflection, application: :pedestrian)
+    Impact::Barrier.new(
+      name: name, application: application, deflection_mm: BigDecimal(deflection.to_s),
+      ratings: { BigDecimal("45") => e45, BigDecimal("90") => e90 }
+    )
+  end
+
+  def column(name, e45, e90, deflection)
+    barrier(name, e45, e90, deflection, application: :column)
+  end
+
+  def s1_barriers
+    [ barrier("PR-4", 7_000, 4_000, 250), barrier("PR-12", 20_000, 12_000, 450),
+      barrier("PR-18", 30_000, 18_000, 700), barrier("PR-24", 40_000, 24_000, 550) ]
+  end
+
+  def verdict(barrier, **point_overrides)
+    hazard = point(**point_overrides)
+    Impact::Rules.verdict(hazard, Impact::Rules.required_energy(hazard), barrier)
+  end
+
+  def kind(barrier, **point_overrides)
+    verdict(barrier, **point_overrides).kind
+  end
 end
