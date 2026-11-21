@@ -58,6 +58,9 @@ function PointCard({ point }: { point: Point }) {
           <span className="text-slate-700">Also fits: {point.other_fitting.join(', ')}</span>
         )}
       </p>
+      {outcome.unmeasured.length > 0 && (
+        <p className="text-sm text-slate-600">rests on: {outcome.unmeasured.join(', ')}</p>
+      )}
 
       {point.barriers.length > 0 && (
         <div className="mt-4 overflow-x-auto">
@@ -79,6 +82,9 @@ function PointCard({ point }: { point: Point }) {
                   <td className="py-2">
                     {VERDICT_TEXT[barrier.verdict]}
                     {barrier.reason && `: ${barrier.reason}`}
+                    {barrier.unmeasured.length > 0 && (
+                      <span className="block text-xs text-slate-500">rests on: {barrier.unmeasured.join(', ')}</span>
+                    )}
                   </td>
                 </tr>
               ))}

@@ -46,6 +46,13 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     assert_equal [ "maximum load (estimated)", "speed (declared)", "impact angle (estimated)" ], point(0).dig("energy", "unmeasured")
   end
 
+  test "IH-23: outcome and verdicts also name an estimated clearance they rest on" do
+    get survey_path(create_survey(with_point(s1, "clearance_mm_source" => "estimated")))
+    assert_includes point(0).dig("outcome", "unmeasured"), "clearance (estimated)"
+    pr12 = point(0)["barriers"].find { _1["name"] == "PR-12" }
+    assert_includes pr12["unmeasured"], "clearance (estimated)"
+  end
+
   test "IH-20: the list shows saved surveys" do
     get root_path
     assert_equal "surveys/index", inertia_page["component"]
