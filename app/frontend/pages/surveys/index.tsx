@@ -6,10 +6,21 @@ export default function Index({ surveys }: SurveyListPage) {
     <>
       <Head title="Surveys" />
       <main className="mx-auto max-w-5xl px-4 py-10">
-        <h1 className="text-2xl font-semibold text-slate-900">Surveys</h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-semibold text-slate-900">Surveys</h1>
+          <Link href="/surveys/new" className="rounded bg-slate-900 px-3 py-1.5 text-sm text-white hover:bg-slate-700">
+            New survey
+          </Link>
+        </div>
 
         {surveys.length === 0 ? (
-          <p className="mt-8 text-slate-600">No surveys yet. Start one with New survey.</p>
+          <p className="mt-8 text-slate-600">
+            No surveys yet. Start one with{' '}
+            <Link href="/surveys/new" className="underline">
+              New survey
+            </Link>
+            .
+          </p>
         ) : (
           <ul className="mt-8 divide-y divide-slate-200 rounded-lg border border-slate-200 bg-white text-sm">
             {surveys.map((survey) => (

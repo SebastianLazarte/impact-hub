@@ -63,4 +63,25 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     get survey_path(999_999)
     assert_response :not_found
   end
+
+  test "IH-20: submitting a valid survey saves it and opens its page" do
+    assert_difference -> { Surveys::Survey.count }, 1 do
+      post surveys_path, params: { survey: s1 }, as: :json
+    end
+    assert_redirected_to survey_path(Surveys::Survey.last)
+  end
+
+  test "IH-21: an invalid survey comes back to the form with an error per field" do
+    post surveys_path, params: { survey: with_point(s1.merge("site_name" => ""), "speed_kmh" => "0") }, as: :json
+    assert_redirected_to new_survey_path
+    follow_redirect!
+    errors = inertia_page.dig("props", "errors")
+    assert_equal "Enter the site name.", errors["site_name"]
+    assert_equal "Speed must be above 0 km/h.", errors["hazard_points.0.speed_kmh"]
+  end
+
+  test "the form receives its choice lists from the server" do
+    get new_survey_path
+    assert_equal %w[pedestrian traffic rack_end column machine], inertia_page.dig("props", "applications").map { _1["value"] }
+  end
 end
