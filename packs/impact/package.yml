@@ -1,0 +1,3 @@
+# Pure rules for hazard points, energy and barrier matching. Depends on nothing (spec C2, IH-7).
+enforce_dependencies: strict
+dependencies: []
