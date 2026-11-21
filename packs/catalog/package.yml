@@ -1,0 +1,4 @@
+# The read-only, fictional, seeded list of barriers the impact rules choose from. Depends on packs/impact (spec C2).
+enforce_dependencies: true
+dependencies:
+  - packs/impact

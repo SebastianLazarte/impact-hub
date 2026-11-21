@@ -1,3 +1,4 @@
 # Root package (app/). Packs never depend on the root; it will depend on them as they are added.
 enforce_dependencies: true
-dependencies: []
+dependencies:
+  - packs/catalog
