@@ -4,7 +4,7 @@ require "rails/test_help"
 
 # Build the Vite test assets once, before the parallel workers start. Otherwise
 # every worker auto-builds on its first page render and they race each other.
-ViteRuby.commands.build_from_task
+ViteRuby.commands.build or raise "Vite test build failed: see the log above"
 
 module ActiveSupport
   class TestCase
