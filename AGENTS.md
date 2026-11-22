@@ -29,7 +29,8 @@ are repeated here on purpose, so every session loads them without opening the sp
 - Spec first, then ADRs. A behaviour change is drafted as a change folder under
   `docs/changes/` and approved by a person before any design or code. ADRs come only
   in step 3 (design): each answers an item of `docs/specs/` on its `Answers:` line; a
-  decision with no spec item goes back to the spec first. None exist yet.
+  decision with no spec item goes back to the spec first. ADRs live in
+  [docs/adr/](docs/adr/).
 - Test first. Add or update the test named after its criterion (`test "IH-n: ..."`),
   watch it fail, then write the code.
 - Never weaken an existing assertion, skip a test or edit `requirements.yml` to make

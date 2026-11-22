@@ -70,7 +70,7 @@ jobs:
         run: |
           bin/rails typelizer:types:refresh
           test -z "$(git status --porcelain -- app/frontend/types/serializers)"
-          ! grep -rn unknown app/frontend/types/serializers
+          if grep -rn unknown app/frontend/types/serializers; then exit 1; fi
       - name: Tests (app + every pack, including traceability and boundaries)
         env:
           RAILS_ENV: test

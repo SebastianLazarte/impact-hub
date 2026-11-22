@@ -46,8 +46,11 @@ export default function New({ modes, applications, sources, facts }: SurveyFormP
       hazard_points: survey.hazard_points.map((point, i) => (i === index ? { ...point, [field]: value } : point)),
     })
   const addPoint = () => form.setData('survey', { ...survey, hazard_points: [...survey.hazard_points, emptyPoint()] })
-  const removePoint = (index: number) =>
+  const removePoint = (index: number) => {
+    // Errors are keyed by point index, so they would land on the wrong point after a removal.
+    form.clearErrors()
     form.setData('survey', { ...survey, hazard_points: survey.hazard_points.filter((_, i) => i !== index) })
+  }
 
   const error = (key: string) =>
     errors[key] ? (

@@ -23,6 +23,22 @@ module Surveys
       assert_equal 0, Surveys::Survey.count
     end
 
+    test "IH-21: every blank, out-of-list and out-of-range field gets its own message" do
+      errors = ->(changes) { Surveys::CreateSurvey.call(with_point(s1, changes)).errors }
+      top = ->(changes) { Surveys::CreateSurvey.call(s1.merge(changes)).errors }
+      assert_equal "Enter the customer name.", top.call("customer_name" => " ")["customer_name"]
+      assert_equal "Enter the survey date.", top.call("surveyed_on" => "")["surveyed_on"]
+      assert_equal "Choose on site or remote.", top.call("mode" => "")["mode"]
+      assert_equal "Enter the zone.", errors.call("zone" => "")["hazard_points.0.zone"]
+      assert_equal "Choose an application.", errors.call("application" => "")["hazard_points.0.application"]
+      assert_equal "Choose an application.", errors.call("application" => "wall")["hazard_points.0.application"]
+      assert_equal "Vehicle mass must be above 0 kg.", errors.call("vehicle_mass_kg" => "0")["hazard_points.0.vehicle_mass_kg"]
+      assert_equal "Maximum load cannot be below 0 kg.", errors.call("max_load_kg" => "-1")["hazard_points.0.max_load_kg"]
+      assert_equal "Clearance cannot be below 0 mm.", errors.call("clearance_mm" => "-1")["hazard_points.0.clearance_mm"]
+      assert_equal "Choose measured, estimated or declared.", errors.call("speed_kmh_source" => "guessed")["hazard_points.0.speed_kmh_source"]
+      assert_equal 0, Surveys::Survey.count
+    end
+
     test "IH-21: unreadable numbers and dates are errors, never 0" do
       [ "abc", "4,000", "8,5" ].each do |raw|
         result = Surveys::CreateSurvey.call(with_point(s1, "speed_kmh" => raw))
