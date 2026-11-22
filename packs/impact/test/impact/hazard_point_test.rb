@@ -7,6 +7,16 @@ module Impact
   class HazardPointTest < ActiveSupport::TestCase
     include ImpactHelpers
 
+    test "IH-21: NaN and Infinity are never a fact value or a barrier number" do
+      [ BigDecimal("NaN"), BigDecimal("Infinity"), BigDecimal("-Infinity"), "NaN", "Infinity" ].each do |bad|
+        assert_raises(ArgumentError, bad.inspect) { Impact::Fact.new(value: bad, source: :measured) }
+        assert_raises(ArgumentError, bad.inspect) { barrier("X", 1, 1, bad) }
+      end
+      assert_raises(ArgumentError) do
+        Impact::Barrier.new(name: "X", application: :pedestrian, deflection_mm: 100, ratings: { BigDecimal("NaN") => 1 })
+      end
+    end
+
     test "a fact with a value needs a source, and a source needs a value" do
       assert_raises(ArgumentError) { Impact::Fact.new(value: "8", source: nil) }
       assert_raises(ArgumentError) { Impact::Fact.new(value: nil, source: :measured) }

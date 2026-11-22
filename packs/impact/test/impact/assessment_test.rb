@@ -23,6 +23,18 @@ module Impact
       assert_equal [ "C", "A", "B" ], [ a.recommendation.name, *a.other_fitting.map(&:name) ]
     end
 
+    test "IH-19: the lowest rating wins even when it deflects more" do
+      a = assess(point, [ barrier("LOW", 20_000, 12_000, 500), barrier("HIGH", 30_000, 20_000, 300) ])
+      assert_equal [ "LOW", [ "HIGH" ] ], [ a.recommendation.name, a.other_fitting.map(&:name) ]
+    end
+
+    test "IH-18: no barrier rated high enough beats a site check when the clearance is unknown" do
+      s3 = point(application: :column, vehicle_mass_kg: fact("12000"), max_load_kg: fact("3000"), speed_kmh: fact("12"),
+        clearance_mm: Impact::Fact.unknown)
+      a = assess(s3, [ column("CG-9", 15_000, 9_000, 100) ])
+      assert_equal [ :engineering_review, :no_barrier_rated_high_enough ], [ a.outcome, a.reason ]
+    end
+
     test "IH-24: unknown clearance with a covering barrier needs a site check" do
       a = assess(point(clearance_mm: Impact::Fact.unknown), s1_barriers)
       assert_equal [ :needs_site_check, :clearance_not_given, nil ], [ a.outcome, a.reason, a.recommendation ]

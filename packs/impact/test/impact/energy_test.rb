@@ -28,7 +28,7 @@ module Impact
         exact = reference_energy(4600, 8, angle)
         got = joules(mass: "4000", load: "600", speed: "8", angle: angle.to_s)
         assert_operator got, :>=, exact, "angle #{angle}"
-        assert_operator got, :<, exact + 2, "angle #{angle}"
+        assert_operator got, :<=, exact + 1, "angle #{angle}"
       end
     end
 

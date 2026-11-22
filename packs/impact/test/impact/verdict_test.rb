@@ -23,6 +23,10 @@ module Impact
       assert_equal :check_space, kind(barrier("PR-12", 20_000, 12_000, 450), clearance_mm: Impact::Fact.unknown)
     end
 
+    test "IH-16: too weak wins over check space when the clearance is unknown" do
+      assert_equal :too_weak, kind(barrier("PR-4", 7_000, 4_000, 250), clearance_mm: Impact::Fact.unknown)
+    end
+
     test "IH-23: a verdict names the clearance too when it was not measured" do
       v = verdict(barrier("PR-12", 20_000, 12_000, 450), clearance_mm: fact("600", :estimated))
       assert_includes v.unmeasured, :clearance_mm

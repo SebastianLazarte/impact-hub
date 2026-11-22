@@ -15,13 +15,16 @@ module Impact
     def self.unknown = new(value: nil, source: nil)
 
     def self.decimal(value)
-      case value
-      when nil then nil
+      number = case value
+      when nil then return nil
       when BigDecimal then value
       when Integer then BigDecimal(value)
       when String then BigDecimal(value)
       else raise ArgumentError, "a fact value must be a String, Integer or BigDecimal, got #{value.class}"
       end
+      raise ArgumentError, "a number must be finite, got #{value.inspect}" unless number.finite?
+
+      number
     end
 
     def self.source(source)
