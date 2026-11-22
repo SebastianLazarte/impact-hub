@@ -22,10 +22,7 @@ module SurveyText
     covering_barriers_do_not_fit: "the barriers that cover it do not fit the space"
   }.freeze
 
-  UNRATED_REASONS = {
-    no_test_angle: "not tested at 60° or steeper",
-    rises_with_angle: "its tested energy rises with the angle"
-  }.freeze
+  RISES_WITH_ANGLE = "its tested energy rises with the angle"
 
   module_function
 
@@ -49,7 +46,7 @@ module SurveyText
 
   def outcome(point)
     assessment = point.assessment
-    reason = assessment.reason == :missing_facts ? missing(assessment.energy.missing) : OUTCOME_REASONS[assessment.reason]
+    reason = assessment.reason == :missing_facts ? missing(assessment.energy.missing) : (assessment.reason && OUTCOME_REASONS.fetch(assessment.reason))
     OutcomeRow.new(status: assessment.outcome.to_s, label: OUTCOME_LABELS.fetch(assessment.outcome),
       reason: reason, unmeasured: unmeasured(assessment.unmeasured, point.record))
   end
@@ -61,7 +58,10 @@ module SurveyText
   def barriers(point)
     record = point.record
     energy = point.assessment.energy
-    point.assessment.verdicts.map do |verdict|
+    sorted = point.assessment.verdicts.sort_by do |v|
+      [ v.rating ? 0 : 1, v.rating ? v.rating.joules : 0, v.barrier.name ]
+    end
+    sorted.map do |verdict|
       BarrierRow.new(
         name: verdict.barrier.name,
         rating: rating(verdict.rating),
@@ -79,11 +79,21 @@ module SurveyText
 
   def verdict_reason(verdict, energy, record)
     case verdict.kind
-    when :not_rated then UNRATED_REASONS.fetch(verdict.reason)
+    when :not_rated then not_rated_reason(verdict, record)
     when :too_weak then "#{QuantityFormat.amount(verdict.rating.joules, 'J')} is below #{QuantityFormat.amount(energy.joules, 'J')}"
     when :check_space then "clearance not given"
     when :does_not_fit
       "deflects #{QuantityFormat.amount(verdict.barrier.deflection_mm, 'mm')}, #{QuantityFormat.amount(record.clearance_mm, 'mm')} free"
+    when :fits then nil
+    else raise ArgumentError, "unknown verdict kind #{verdict.kind.inspect}"
+    end
+  end
+
+  def not_rated_reason(verdict, record)
+    case verdict.reason
+    when :no_test_angle then "not tested at #{QuantityFormat.amount(record.impact_angle_deg, '°')} or steeper"
+    when :rises_with_angle then RISES_WITH_ANGLE
+    else raise KeyError, "unknown not-rated reason #{verdict.reason.inspect}"
     end
   end
 

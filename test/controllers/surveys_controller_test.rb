@@ -30,6 +30,11 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     assert_equal [ "does_not_fit", "deflects 700 mm, 600 mm free" ], pr18.values_at("verdict", "reason")
   end
 
+  test "IH-19: barriers are listed by rating at the point's angle, not by name" do
+    get survey_path(@s1)
+    assert_equal %w[PR-4 PR-12 PR-18 PR-24], point(0)["barriers"].map { _1["name"] }
+  end
+
   test "IH-15: an unknown fact shows unknown, names it, and lists no barrier" do
     get survey_path(create_survey(with_point(s1, "max_load_kg" => "", "max_load_kg_source" => "")))
     assert_equal [ nil, "maximum load not given" ], point(0)["energy"].values_at("value", "reason")
