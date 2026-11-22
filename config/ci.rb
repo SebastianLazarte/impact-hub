@@ -5,6 +5,10 @@ CI.run do
 
   step "Style: Ruby", "bin/rubocop"
   step "Boundaries: Packwerk", "bin/packwerk validate && bin/packwerk check"
+  step "Types: generated page types are current",
+    "TYPELIZER=true bin/rails typelizer:types:refresh && " \
+    "test -z \"$(git status --porcelain -- app/frontend/types/serializers)\" && " \
+    "! grep -rn unknown app/frontend/types/serializers"
   step "Types: TypeScript", "npm run check"
 
   step "Security: Gem audit", "bin/bundler-audit"

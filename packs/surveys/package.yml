@@ -1,0 +1,5 @@
+# Surveys with their hazard points, saved and read as a whole. Depends on packs/impact and packs/catalog (spec C2).
+enforce_dependencies: true
+dependencies:
+  - packs/impact
+  - packs/catalog

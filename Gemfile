@@ -58,5 +58,7 @@ gem "inertia_rails", "~> 3.23"
 gem "vite_rails", "~> 3.11"
 
 gem "packs-rails", "~> 0.1.1"
+gem "alba", "~> 4.0"
+gem "typelizer", "~> 0.15"
 
 gem "packwerk", "~> 3.3", groups: [ :development, :test ]

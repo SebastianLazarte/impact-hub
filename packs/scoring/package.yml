@@ -1,3 +1,0 @@
-# Pure scoring rules (spec P1, C2). Depends on nothing: not on other packs, not on Rails.
-enforce_dependencies: strict
-dependencies: []

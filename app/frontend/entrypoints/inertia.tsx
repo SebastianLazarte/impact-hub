@@ -5,7 +5,7 @@ void createInertiaApp({
 
   serverHead: true,
 
-  title: (title) => title || "Intake Hub",
+  title: (title) => title || "Impact Hub",
 
   strictMode: true,
 

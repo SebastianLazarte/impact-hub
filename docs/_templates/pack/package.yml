@@ -1,4 +1,4 @@
 # <What this pack does>. Depends on <packs> (spec C2).
 enforce_dependencies: true
-dependencies:
-  - packs/scoring
+# List the packs this one may use, e.g. packs/impact. Delete this comment when done.
+dependencies: []

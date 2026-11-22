@@ -14,7 +14,8 @@ angle. How a barrier is rated for a hazard point is in impact.md section 4.
 
 ## 3. Catalog data (IH-22)
 The catalog is data, not spec. In this iteration it is fictional, read-only and seeded,
-every barrier in it is tested at 45° and at 90°, and every page that shows it says "example values, not manufacturer data" (C4).
+every barrier in it is tested at 45° and at 90°, with an energy at 90° not above its
+energy at 45° (impact.md section 4), and every page that shows it says "example values, not manufacturer data" (C4).
 
 ## 4. Open questions for review
 None.
